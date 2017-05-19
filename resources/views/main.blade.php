@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title><?=$title;?></title>
+<title>{{ $title }}</title>
 <meta name="keywords" content="yellow blog template, free html css layout" />
 <meta name="description" content="yellow blog template, free html css layout from Ftemplate.ru" />
-<link href="/templatemo_style.css" rel="stylesheet" type="text/css" />
+<link href="/css/templatemo_style.css" rel="stylesheet" type="text/css" />
 <script language="javascript" type="text/javascript">
 function clearText(field)
 {
@@ -52,7 +52,7 @@ function clearText(field)
             <div id="templatemo_content">
             	<div class="content_bottom"></div>
             	
-					<?=$content;?>
+				{{ $content }}
 				
                 <div id="side_column">
                 
