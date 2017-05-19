@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +13,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+	Route::group(['prefix' => '/articles'], function () {
+		Route::get('/', 'Articles@index');
+		Route::get('/one/{id}', 'Articles@one');
+		Route::get('/add' ,'Articles@add');
+		Route::get('/edit/{id}', 'Articles@edit');
+		Route::get('/delete/{id}', 'Articles@delete');
+	});
 });
+
+
+Route::group(['namespace' => 'Client'], function () {
+	Route::group(['prefix' => 'articles'], function () {
+		Route::get('/', 'Articles@index');
+		Route::get('/one/{id}', 'Articles@one');
+	});
+	
+	Route::get('registration', 'Registration@register');
+});
+
