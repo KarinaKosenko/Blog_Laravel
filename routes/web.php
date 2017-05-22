@@ -14,22 +14,38 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+	Route::get('/', 'ArticlesController@index');
+	
 	Route::group(['prefix' => '/articles'], function () {
-		Route::get('/', 'Articles@index');
-		Route::get('/one/{id}', 'Articles@one');
-		Route::get('/add' ,'Articles@add');
-		Route::get('/edit/{id}', 'Articles@edit');
-		Route::get('/delete/{id}', 'Articles@delete');
+		Route::get('/', 'ArticlesController@index');
+		Route::get('/one/{id}', 'ArticlesController@one');
+		Route::get('/add' ,'ArticlesController@add');
+		Route::get('/edit/{id}', 'ArticlesController@edit');
+		Route::get('/delete/{id}', 'ArticlesController@delete');
+	});
+	
+	Route::group(['prefix' => 'guestbook'], function () {
+		Route::get('/', 'GuestbookController@index');
+		Route::get('/add', 'GuestbookController@add');
+		Route::get('/edit/{id}', 'GuestbookController@edit');
+		Route::get('/delete/{id}', 'GuestbookController@delete');
 	});
 });
 
 
 Route::group(['namespace' => 'Client'], function () {
+	Route::get('/', 'ArticlesController@index');
+	
 	Route::group(['prefix' => 'articles'], function () {
-		Route::get('/', 'Articles@index');
-		Route::get('/one/{id}', 'Articles@one');
+		Route::get('/', 'ArticlesController@index');
+		Route::get('/one/{id}', 'ArticlesController@one');
 	});
 	
-	Route::get('registration', 'Registration@register');
+	Route::group(['prefix' => 'guestbook'], function () {
+		Route::get('/', 'GuestbookController@index');
+		Route::get('/add', 'GuestbookController@add');
+	});
+	
+	Route::get('registration', 'RegistrationController@register');
 });
 
