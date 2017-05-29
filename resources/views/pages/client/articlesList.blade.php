@@ -1,5 +1,3 @@
-@extends('base')
-
 @section('main_column')
 	
 	@forelse ($articles as $article)

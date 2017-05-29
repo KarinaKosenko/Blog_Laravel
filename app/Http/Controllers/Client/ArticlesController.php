@@ -8,12 +8,22 @@ class ArticlesController extends ClientBase
 {
     public function index()
 	{
-		return view('pages.client.articlesList', ['articles' => []]);
+		return view('layouts.double', [
+			'articles' => [],
+			'page' => 'pages.client.articlesList',
+		]);
 	}
 	
 	
 	public function one($id)
 	{
-		return view('pages.articlePage', ['title' => 'Article Title', 'article' => ['title' => 'Title', 'content' => 'Content']]);
+		return view('layouts.double', [
+			'page' => 'pages.client.articlePage',
+			'title' => 'Article Title', 
+			'article' => [
+				'title' => 'Title', 
+				'content' => 'Content'
+			],
+		]);
 	}
 }

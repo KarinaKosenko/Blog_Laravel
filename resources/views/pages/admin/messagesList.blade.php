@@ -1,5 +1,3 @@
-@extends('base')
-
 @section('main_column')
 	<a href="/admin/guestbook/add"><strong>Написать сообщение</strong></a><br><br>
 	@forelse ($messages as $message)

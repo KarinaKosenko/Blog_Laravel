@@ -8,25 +8,59 @@ class ArticlesController extends AdminBase
 {
     public function index()
 	{
-		return view('pages.admin.articlesList', ['title' => 'Main Page', 'menu' => $this->menu, 'articles' => []]);
+		return view('layouts.single', [
+			'articles' => [],
+			'page' => 'pages.admin.articlesList',
+			'title' => 'Articles List', 
+			'menu' => $this->menu, 
+			'articles' => [],
+		]);
 	}
 	
 	
 	public function one($id)
 	{
-		return view('pages.admin.articlePage', ['title' => 'Article Title', 'menu' => $this->menu, 'article' => ['title' => 'Title Admin', 'content' => 'Content'], 'id' => $id]);
+		return view('layouts.single', [
+			'page' => 'pages.admin.articlePage',
+			'title' => 'Article with id ' . $id, 
+			'menu' => $this->menu,
+			'article' => [
+				'title' => 'Title', 
+				'content' => 'Content'
+			],
+			'id' => $id,
+		]);
 	}
 	
 	
 	public function add()
 	{
-		return view('pages.admin.addArticle', ['menu' => $this->menu]);
+		return view('layouts.single', [
+			'page' => 'pages.admin.addArticle', 
+			'title' => 'Add Article',
+			'menu' => $this->menu, 
+		]);
+	}
+	
+	
+	public function addPost()
+	{
+		
 	}
 	
 	
 	public function edit($id)
 	{
-		return view('pages.admin.addArticle', ['menu' => $this->menu]);
+		return view('layouts.single', [
+			'page' => 'pages.admin.addArticle', 
+			'menu' => $this->menu, 
+		]);
+	}
+	
+	
+	public function editPost($id)
+	{
+		
 	}
 	
 	

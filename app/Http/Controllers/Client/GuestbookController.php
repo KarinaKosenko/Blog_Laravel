@@ -8,13 +8,26 @@ class GuestbookController extends ClientBase
 {
     public function index()
 	{
-		return view('pages.client.messagesList', ['title' => 'Main Page', 'messages' => []]);
+		return view('layouts.double', [
+			'page' => 'pages.client.messagesList',
+			'title' => 'Messages List', 
+			'messages' => [],
+		]);
 	}
 	
 	
 	public function add()
 	{
-		return view('pages.client.addMessage');
+		return view('layouts.double', [
+			'page' => 'pages.client.addMessage',
+			'title' => 'Add Message',
+		]);
+	}
+	
+	
+	public function addPost()
+	{
+		
 	}
 	
 }
