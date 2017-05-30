@@ -8,19 +8,44 @@ class GuestbookController extends AdminBase
 {
     public function index()
 	{
-		return view('pages.admin.messagesList', ['title' => 'Main Page', 'menu' => $this->menu, 'messages' => []]);
+		return view('layouts.single', [
+			'page' => 'pages.admin.messagesList',
+			'title' => 'Message List', 
+			'menu' => $this->menu,
+			'messages' => [],
+		]);
 	}
 	
 	
 	public function add()
 	{
-		return view('pages.admin.addMessage', ['menu' => $this->menu]);
+		return view('layouts.single', [
+			'page' => 'pages.admin.addMessage',
+			'title' => 'Add Message', 
+			'menu' => $this->menu,
+		]);
+	}
+	
+	
+	public function addPost()
+	{
+		
 	}
 	
 	
 	public function edit($id)
 	{
-		return view('pages.admin.addMessage', ['menu' => $this->menu]);
+		return view('layouts.single', [
+			'page' => 'pages.admin.addMessage',
+			'title' => 'Edit Message', 
+			'menu' => $this->menu,
+		]);
+	}
+	
+	
+	public function editPost($id)
+	{
+		
 	}
 	
 	

@@ -1,5 +1,3 @@
-@extends('base')
-
 @section('main_column')
 	<div class="post_box">
 		<h2>{{ $article['title'] }}</h2>
