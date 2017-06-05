@@ -1,7 +1,7 @@
 @section('main_column')
 	
 	@forelse ($articles as $article)
-		<li><a href="#">{{ $article['title'] }}</a></li>
+		<li><a href="{{ route('public.articles.one', ['id' => $article->id]) }}">{{ $article->title }}</a></li>
 	@empty
 		<strong>Articles not found</strong>
 	@endforelse

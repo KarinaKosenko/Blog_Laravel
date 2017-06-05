@@ -103,6 +103,12 @@ Route::group(['namespace' => 'Client'], function () {
 			->name('public.guestbook.addPost');
 	});
 	
+	
+	Route::group(['prefix' => 'archive'], function () {
+	
+		Route::get('/search', 'ArchivesController@search')
+			->name('public.archives.search');
+	});
 });
 
 
@@ -122,8 +128,12 @@ Route::get('/login', 'AuthController@login')
 Route::post('/login', 'AuthController@loginPost')
     ->name('public.auth.loginPost');
 	
+Route::get('/admin/login', 'AuthController@login')
+    ->name('login');
+	
+Route::post('/admin/login', 'AuthController@loginAdminPost')
+    ->name('login');
+		
 Route::get('/logout', 'AuthController@logout')
     ->name('public.auth.logout');
 	
-
-
