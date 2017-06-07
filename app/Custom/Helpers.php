@@ -23,3 +23,10 @@
 		return substr($content, 0, 100);
 	}
 	
+	
+	function substrDate($date)
+	{
+		return substr($date, 0, 10);
+	}
+	
+	

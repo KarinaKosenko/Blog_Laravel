@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Article;
 use App\Models\Menu;
+use App\Http\Requests\AddBlogArticle;
+use Illuminate\Validation\Rule;
 
 
 class ArticlesController extends AdminBase
@@ -33,7 +35,7 @@ class ArticlesController extends AdminBase
 		
 		return view('layouts.single', [
 			'page' => 'pages.admin.articlePage',
-			'title' => 'Article with id ' . $id, 
+			'title' => 'Article ' . $article->title, 
 			'menu' => $this->menu,
 			'article' => $article,
 		]);
@@ -53,10 +55,8 @@ class ArticlesController extends AdminBase
 	}
 	
 	
-	public function addPost(Request $request)
+	public function addPost(Request $request, AddBlogArticle $rules)
 	{
-		$this->validate($request, getArticlesValidationMap('add'));
-		
 		$newArticle = new Article();
 		$newArticle->title = $request->title;
 		$newArticle->content = $request->content;
@@ -74,6 +74,7 @@ class ArticlesController extends AdminBase
 		
 		return view('layouts.single', [
 			'page' => 'pages.admin.addArticle', 
+			'title' => 'Edit Article ' . $article->title,
 			'menu' => $this->menu,
 			'article' => $article,
 			'msg' => 'Пожалуйста, отредактируйте статью.',
@@ -85,7 +86,13 @@ class ArticlesController extends AdminBase
 	{
 		$article = Article::findOrFail($id);
 		
-		$this->validate($request, getArticlesValidationMap('edit'));
+		$this->validate($request, [
+			'title' => [
+				'required',
+				Rule::unique('articles')->ignore($article->id)
+			],
+			'content' => 'required|max:300|min:10',
+		]);
 		
 		$article->title = $request->title;
 		$article->content = $request->content;

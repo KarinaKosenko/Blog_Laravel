@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\Menu;
+use App\Http\Requests\StoreGuestbookMessage;
 
 
 class GuestbookController extends AdminBase
@@ -41,10 +42,8 @@ class GuestbookController extends AdminBase
 	}
 	
 	
-	public function addPost(Request $request)
+	public function addPost(Request $request, StoreGuestbookMessage $rules)
 	{
-		$this->validate($request, getMessagesValidationMap());
-		
 		$newMessage = new Message();
 		$newMessage->name = $request->name;
 		$newMessage->text = $request->text;
@@ -69,11 +68,9 @@ class GuestbookController extends AdminBase
 	}
 	
 	
-	public function editPost($id, Request $request)
+	public function editPost($id, Request $request, StoreGuestbookMessage $rules)
 	{
 		$message = Message::findOrFail($id);
-		
-		$this->validate($request, getMessagesValidationMap());
 		
 		$message->name = $request->name;
 		$message->text = $request->text;

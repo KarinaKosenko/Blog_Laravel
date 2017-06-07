@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Models\Message;
 use App\Models\Menu;
+use App\Http\Requests\StoreGuestbookMessage;
 
 
 class GuestbookController extends ClientBase
@@ -43,10 +44,8 @@ class GuestbookController extends ClientBase
 	}
 	
 	
-	public function addPost(Request $request)
+	public function addPost(Request $request, StoreGuestbookMessage $rules)
 	{
-		$this->validate($request, getMessagesValidationMap());
-		
 		$newMessage = new Message();
 		$newMessage->name = $request->name;
 		$newMessage->text = $request->text;

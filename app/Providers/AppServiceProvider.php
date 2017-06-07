@@ -17,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         include app_path('Custom' . DIRECTORY_SEPARATOR . 'Helpers.php');
-		include app_path('Custom' . DIRECTORY_SEPARATOR . 'ValidationMaps.php');
     }
 
     /**

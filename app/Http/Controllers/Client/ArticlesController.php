@@ -31,7 +31,7 @@ class ArticlesController extends ClientBase
 		
 		return view('layouts.double', [
 			'page' => 'pages.client.articlePage',
-			'title' => 'Article with id ' . $id, 
+			'title' => 'Article ' . $article->title, 
 			'article' => $article,
 			'recent_posts' => $this->recent_posts,
 			'menu' => $this->menu,
