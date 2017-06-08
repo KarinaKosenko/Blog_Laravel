@@ -6,14 +6,34 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Article;
+use App\Models\Menu;
 
 
 class AuthController extends Controller
 {
-    public function register()
+    public $recent_posts;
+	protected $menu;
+	
+	
+	public function __construct()
+	{
+		$this->recent_posts = Article::all()
+			->sortByDesc('created_at')
+			->take(3);
+			
+		$this->menu = Menu::where('panel_name', 'public')
+			->get();	
+	}
+	
+	
+	public function register()
 	{
 		return view('layouts.double', [
+			'title' => 'Registration',
 			'page' => 'pages.client.registrationPage',
+			'recent_posts' => $this->recent_posts,
+			'menu' => $this->menu,
 		]);
 	}
 	
@@ -47,7 +67,10 @@ class AuthController extends Controller
 	public function login()
 	{
 		return view('layouts.double', [
+			'title' => 'Log In',
 			'page' => 'pages.client.loginPage',
+			'recent_posts' => $this->recent_posts,
+			'menu' => $this->menu,
 		]);
 	}
 	
@@ -67,6 +90,26 @@ class AuthController extends Controller
 		else {
 			return redirect()
 				->route('public.auth.login')
+				->with('authError', trans('custom.wrong_password'));
+		}
+	}
+	
+	
+	public function loginAdminPost(Request $request)
+	{
+		$remember = $request->input('remember') ? true : false;
+		
+		$authResult = Auth::attempt([
+			'email' => $request->input('email'),
+			'password' => $request->input('password'),
+		], $remember);
+		
+		if ($authResult && Auth::user()->name === 'Admin') {
+			return redirect()->route('admin.articles.index');
+		} 
+		else {
+			return redirect()
+				->route('login')
 				->with('authError', trans('custom.wrong_password'));
 		}
 	}

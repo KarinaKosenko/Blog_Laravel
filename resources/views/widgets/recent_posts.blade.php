@@ -1,18 +1,10 @@
 <div class="side_column_section">
 	<h3>Свежие статьи</h3>
 					
-	<div class="recent_post">
-		<h4><a href="#">Статья 1</a></h4>
-		Получаем данные из БД.
-	</div>
-	
-	<div class="recent_post">
-		<h4><a href="#">Статья 2</a></h4>
-		Получаем данные из БД.
-	</div>
-	
-	<div class="recent_post">
-		<h4><a href="#">Статья 3</a></h4>
-		Получаем данные из БД.
-	</div>             
+	@foreach ($recent_posts as $post)
+		<div class="recent_post">
+			<h4><a href="{{ route('public.articles.one', ['id' => $post->id]) }}">{{ $post->title }}</a></h4>
+			<p>{{ substrContent($post->content) }}</p>
+		</div>
+	@endforeach          
 </div>

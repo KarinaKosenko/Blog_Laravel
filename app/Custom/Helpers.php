@@ -6,45 +6,27 @@
 	}
 	
 	
-	function getMenu() //тестовый метод, который будет переписан после изучения работы с БД.
+	function getMonthsList()
 	{
-		return
+		return 
 			[
-				'index' => [
-						'href' => '/articles',
-						'text' => 'Главная',
-						'is_active' => false
-					],
-					
-				'guestbook' => [
-						'href' => '/guestbook',
-						'text' => 'Гостевая',
-						'is_active' => false
-					],
+				"Январь" => 1, "Февраль" => 2, "Март" => 3, 
+				"Апрель" => 4, "Май" => 5, "Июнь" => 6, 
+				"Июль" => 7, "Август" => 8, "Сентябрь" => 9, 
+				"Октябрь" => 10, "Ноябрь" => 11, "Декабрь" => 12
 			];
 	}
 	
 	
-	function getAdminMenu()
+	function substrContent($content)
 	{
-		return
-			[
-				'index' => [
-						'href' => '/admin/articles',
-						'text' => 'Главная',
-						'is_active' => false
-					],
-					
-				'addArticle' => [
-					'href' => '/admin/articles/add',
-					'text' => 'Добавить',
-					'is_active' => false
-				],
-					
-				'guestbook' => [
-						'href' => '/admin/guestbook',
-						'text' => 'Гостевая',
-						'is_active' => false
-					],
-			];
+		return substr($content, 0, 100);
 	}
+	
+	
+	function substrDate($date)
+	{
+		return substr($date, 0, 10);
+	}
+	
+	

@@ -3,10 +3,11 @@
 		<ul>
 			@foreach ($menu as $key)
 				<li>
-					@if($key['is_active'])
-						class='current'
+					@if ($key->is_active)
+						<a class='current' href="{{ $key->href }}">{{ $key->text }}</a>
+					@else
+						<a href="{{ $key->href }}">{{ $key->text }}</a>
 					@endif
-						<a href="{{ $key['href'] }}">{{ $key['text'] }}</a>
 				</li>
 			@endforeach
 		</ul>
