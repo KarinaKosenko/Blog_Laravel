@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
  * Routes for admin panel
  */
 
-Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admin'], function () {
 	
 	Route::get('/', 'ArticlesController@index')
 		->name('admin.articles.index');
@@ -69,6 +69,25 @@ Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
 		Route::get('/delete/{id}', 'GuestbookController@delete')
 			->name('admin.guestbook.delete');
 	});
+	
+	
+	Route::group(['prefix' => 'comments'], function () {
+	
+		Route::get('/add/{article_id}', 'CommentsController@add')
+			->name('admin.comments.add');
+			
+		Route::post('/add/{article_id}', 'CommentsController@addPost')
+			->name('admin.comments.addPost');
+			
+		Route::get('/edit/{article_id}/{comment_id}', 'CommentsController@edit')
+			->name('admin.comments.edit');
+			
+		Route::post('/edit/{article_id}/{comment_id}', 'CommentsController@editPost')
+			->name('admin.comments.editPost');
+			
+		Route::get('/delete/{article_id}/{comment_id}', 'CommentsController@delete')
+			->name('admin.comments.delete');
+	});
 });
 
 
@@ -109,6 +128,16 @@ Route::group(['namespace' => 'Client'], function () {
 		Route::get('/search', 'ArchivesController@search')
 			->name('public.archives.search');
 	});
+	
+	
+	Route::group(['prefix' => 'comments', 'middleware' => 'auth'], function () {
+	
+		Route::get('/add/{article_id}', 'CommentsController@add')
+			->name('public.comments.add');
+			
+		Route::post('/add/{article_id}', 'CommentsController@addPost')
+			->name('public.comments.addPost');
+	});
 });
 
 
@@ -123,16 +152,16 @@ Route::post('/register', 'AuthController@registerPost')
     ->name('public.auth.registerPost');
 	
 Route::get('/login', 'AuthController@login')
-    ->name('public.auth.login');
+    ->name('login');
 	
 Route::post('/login', 'AuthController@loginPost')
     ->name('public.auth.loginPost');
 	
-Route::get('/admin/login', 'AuthController@login')
-    ->name('login');
+Route::get('/admin/login','AuthController@login')
+    ->name('admin.auth.login');
 	
 Route::post('/admin/login', 'AuthController@loginAdminPost')
-    ->name('login');
+    ->name('admin.auth.loginPost');
 		
 Route::get('/logout', 'AuthController@logout')
     ->name('public.auth.logout');

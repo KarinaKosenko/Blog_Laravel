@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Article;
 use App\Models\Menu;
+use App\Models\Comment;
 use App\Http\Requests\AddBlogArticle;
 use Illuminate\Validation\Rule;
 
@@ -15,8 +16,8 @@ class ArticlesController extends AdminBase
 	
 	public function index()
 	{
-		$articles = Article::all()
-			->sortByDesc('created_at');
+		$articles = Article::orderBy('created_at', 'desc')
+            ->paginate(5);
 			
 		$this->menu = Menu::setMenuIsActive($this->menu, 'index');
 		
@@ -32,12 +33,14 @@ class ArticlesController extends AdminBase
 	public function one($id)
 	{
 		$article = Article::findOrFail($id);
+        $comments = $article->comments->sortByDesc('created_at');
 		
 		return view('layouts.single', [
 			'page' => 'pages.admin.articlePage',
 			'title' => 'Article ' . $article->title, 
 			'menu' => $this->menu,
 			'article' => $article,
+			'comments' => $comments,
 		]);
 	}
 	
@@ -57,11 +60,11 @@ class ArticlesController extends AdminBase
 	
 	public function addPost(Request $request, AddBlogArticle $rules)
 	{
-		$newArticle = new Article();
-		$newArticle->title = $request->title;
-		$newArticle->content = $request->content;
-		$newArticle->author = Auth::user()->name;
-		$newArticle->save();
+		$newArticle = Article::create([
+			'title' => $request['title'],
+			'content' => $request['content'],
+			'author' => Auth::user()->name,
+		]);
 		
 		return redirect()
 			->route('admin.articles.index');
@@ -94,10 +97,7 @@ class ArticlesController extends AdminBase
 			'content' => 'required|max:300|min:10',
 		]);
 		
-		$article->title = $request->title;
-		$article->content = $request->content;
-		$article->author = Auth::user()->name;
-		$article->save();
+		$article->update($request->all());
 		
 		return redirect()
 			->route('admin.articles.index');
@@ -106,8 +106,8 @@ class ArticlesController extends AdminBase
 	
 	public function delete($id)
 	{
-		$article = Article::findOrFail($id);
-		$article->delete();
+		$article = Article::findOrFail($id)
+		    ->delete();
 		
 		return redirect()
 			->route('admin.articles.index');

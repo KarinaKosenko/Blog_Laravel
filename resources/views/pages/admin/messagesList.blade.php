@@ -10,5 +10,7 @@
 	@empty
 		<strong>Messages not found</strong>
 	@endforelse
+
+	{{ $messages->links()  }}
 	
 @endsection

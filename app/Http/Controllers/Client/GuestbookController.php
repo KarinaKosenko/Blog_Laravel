@@ -19,8 +19,8 @@ class GuestbookController extends ClientBase
 
    public function index()
 	{
-		$messages = Message::all()
-			->sortByDesc('created_at');
+		$messages = Message::orderBy('created_at', 'desc')
+            ->paginate(5);
 		
 		return view('layouts.double', [
 			'page' => 'pages.client.messagesList',
@@ -46,10 +46,7 @@ class GuestbookController extends ClientBase
 	
 	public function addPost(Request $request, StoreGuestbookMessage $rules)
 	{
-		$newMessage = new Message();
-		$newMessage->name = $request->name;
-		$newMessage->text = $request->text;
-		$newMessage->save();
+		$newMessage = Message::create($request->all());
 		
 		return redirect()
 			->route('public.guestbook.index');

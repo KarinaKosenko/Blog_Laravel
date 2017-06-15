@@ -5,5 +5,7 @@
 	@empty
 		<strong>Articles not found</strong>
 	@endforelse
+
+	{{ $articles->links() }}
 	
 @endsection

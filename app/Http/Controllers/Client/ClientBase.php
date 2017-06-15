@@ -21,8 +21,6 @@ class ClientBase extends Controller
 		$this->menu = Menu::where('panel_name', 'public')
 			->get();
 		
-		$this->recent_posts = Article::all()
-			->sortByDesc('created_at')
-			->take(3);
+		$this->recent_posts = Article::recent(3);
 	}
 }

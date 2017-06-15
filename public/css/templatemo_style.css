@@ -11,6 +11,17 @@ body {
 	color: #000000;
 	background: #1b9bd7;
 }
+
+.pagination {
+	margin: 0; /* Обнуляем значение отступов */
+	padding: 4px; /* Значение полей */
+}
+
+.pagination li {
+	display: inline; /* Отображать как строчный элемент */
+	margin-right: 5px; /* Отступ слева */
+	padding: 3px; /* Поля вокруг текста */
+}
 		
 a:link, a:visited { color: #0066CC; text-decoration: none; font-weight: normal; } 
 a:active, a:hover { color: #FF0066; text-decoration: underline; }
@@ -504,5 +515,8 @@ h4 {
 	color: #ffffff;
 	text-decoration: none;
 }
+
+
+
 
 

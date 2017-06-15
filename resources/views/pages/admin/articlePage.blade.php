@@ -9,11 +9,11 @@
           </div>
 
             <div class="post_author">
-                <a href="#">{{ $article->author }}</a>
+                <span>{{ $article->author }}</span>
             </div>
 
             <div class="post_comment">
-                <a href="#">184 comments</a>
+                <span>{{ $article->comments->count() }} comments</span>
             </div>
 
             <div class="cleaner"></div>
@@ -22,7 +22,18 @@
 		<div class="post_body">
 			{!! $article->content !!}
 		</div>  
-		<a href="{{ route('admin.articles.edit', ['id' => $article->id]) }}">Редактировать</a><br>
-		<a href="{{ route('admin.articles.delete', ['id' => $article->id]) }}">Удалить</a>
+		<a href="{{ route('admin.articles.edit', ['article_id' => $article->id]) }}">Редактировать</a><br>
+		<a href="{{ route('admin.articles.delete', ['article_id' => $article->id]) }}">Удалить</a>
 	</div>
+
+	<a href="{{ route('admin.comments.add', ['article_id' => $article->id]) }}"><strong>Добавить комментарий</strong></a><br><br>
+
+	@forelse ($comments as $comment)
+		<li><strong>{{ $comment->author }}</strong><br>{{ $comment->created_at }}<br>{{ $comment->text }}</li>
+		<a href="{{ route('admin.comments.edit', ['article_id' => $article->id, 'comment_id' => $comment->id]) }}">Редактировать</a><br>
+		<a href="{{ route('admin.comments.delete', ['article_id' => $article->id, 'comment_id' => $comment->id]) }}">Удалить</a><br><br>
+	@empty
+		<strong>К этой статье комментариев пока нет.</strong>
+	@endforelse
+		
 @endsection

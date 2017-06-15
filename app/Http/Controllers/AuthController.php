@@ -18,9 +18,7 @@ class AuthController extends Controller
 	
 	public function __construct()
 	{
-		$this->recent_posts = Article::all()
-			->sortByDesc('created_at')
-			->take(3);
+		$this->recent_posts = Article::recent(3);
 			
 		$this->menu = Menu::where('panel_name', 'public')
 			->get();	
@@ -89,7 +87,7 @@ class AuthController extends Controller
 		} 
 		else {
 			return redirect()
-				->route('public.auth.login')
+				->route('login')
 				->with('authError', trans('custom.wrong_password'));
 		}
 	}
@@ -104,12 +102,12 @@ class AuthController extends Controller
 			'password' => $request->input('password'),
 		], $remember);
 		
-		if ($authResult && Auth::user()->name === 'Admin') {
+		if ($authResult && Auth::user()->isAdmin()) {
 			return redirect()->route('admin.articles.index');
 		} 
 		else {
 			return redirect()
-				->route('login')
+				->route('admin.auth.login')
 				->with('authError', trans('custom.wrong_password'));
 		}
 	}
