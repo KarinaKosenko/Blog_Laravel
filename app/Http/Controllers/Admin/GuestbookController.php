@@ -19,8 +19,8 @@ class GuestbookController extends AdminBase
 	
 	public function index()
 	{
-		$messages = Message::all()
-			->sortByDesc('created_at');
+		$messages = Message::orderBy('created_at', 'desc')
+            ->paginate(5);
 			
 		return view('layouts.single', [
 			'page' => 'pages.admin.messagesList',
@@ -44,10 +44,7 @@ class GuestbookController extends AdminBase
 	
 	public function addPost(Request $request, StoreGuestbookMessage $rules)
 	{
-		$newMessage = new Message();
-		$newMessage->name = $request->name;
-		$newMessage->text = $request->text;
-		$newMessage->save();
+		$newMessage = Message::create($request->all());
 		
 		return redirect()
 			->route('admin.guestbook.index');
@@ -72,9 +69,7 @@ class GuestbookController extends AdminBase
 	{
 		$message = Message::findOrFail($id);
 		
-		$message->name = $request->name;
-		$message->text = $request->text;
-		$message->save();
+		$message->update($request->all());
 		
 		return redirect()
 			->route('admin.guestbook.index');
@@ -83,8 +78,8 @@ class GuestbookController extends AdminBase
 	
 	public function delete($id)
 	{
-		$message = Message::findOrFail($id);
-		$message->delete();
+		$message = Message::findOrFail($id)
+		    ->delete();
 		
 		return redirect()
 			->route('admin.guestbook.index');

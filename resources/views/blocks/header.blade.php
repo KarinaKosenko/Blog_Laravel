@@ -5,7 +5,7 @@
 		</li>
 	@else
 		<ul>
-			<li><a href="{{ route('public.auth.login') }}">Вход</a></li>
+			<li><a href="{{ route('login') }}">Вход</a></li>
 			<li><a href="{{ route('public.auth.register') }}">Регистрация</a></li>
 		</ul>
 	@endif

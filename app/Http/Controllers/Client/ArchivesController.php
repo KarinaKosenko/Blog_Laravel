@@ -10,9 +10,10 @@ class ArchivesController extends ClientBase
 	public function search(Request $request)
 	{
 		if(isset($request->year) && isset($request->month)) {
-			$articles = Article::where('created_at', '>=', "$request->year". "-" . "$request->month" . "-" . "01" )
-				->where('created_at', '<=', "$request->year". "-" . "$request->month" . "-" . "31" )
-				->get();
+			$articles = Article::whereBetween('created_at', [
+			    "$request->year". "-" . "$request->month" . "-" . "01",
+                "$request->year". "-" . "$request->month" . "-" . "31"
+            ])->get();
 		
 			return view('layouts.double', [
 				'title' => 'Archive Searching - Result',

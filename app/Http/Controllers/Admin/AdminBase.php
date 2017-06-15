@@ -17,7 +17,6 @@ abstract class AdminBase extends Controller
 	
 	public function __construct()
 	{
-		$this->middleware('auth');
 		$this->menu = Menu::where('panel_name', 'admin')
 			->get();	
 	}
