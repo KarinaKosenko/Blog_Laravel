@@ -10,7 +10,7 @@ use App\Http\Requests\StoreBlogComment;
 
 class CommentsController extends ClientBase
 {
-    public function add($article_id)
+    public function add($article_id, $parent_id)
 	{
 		return view('layouts.double', [
 			'page' => 'pages.client.addComment', 
@@ -22,12 +22,13 @@ class CommentsController extends ClientBase
 	}
 	
 	
-	public function addPost($article_id, Request $request, StoreBlogComment $rules)
+	public function addPost($article_id, $parent_id, Request $request, StoreBlogComment $rules)
 	{
 		$newComment = Comment::create([
 			'author' => Auth::user()->name,
 			'text' => $request->text,
 			'article_id' => $article_id,
+            'parent_id' => $parent_id,
 		]);
 		
 		return redirect()

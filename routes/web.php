@@ -73,10 +73,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admi
 	
 	Route::group(['prefix' => 'comments'], function () {
 	
-		Route::get('/add/{article_id}', 'CommentsController@add')
+		Route::get('/add/{article_id}/{parent_id?}', 'CommentsController@add')
 			->name('admin.comments.add');
 			
-		Route::post('/add/{article_id}', 'CommentsController@addPost')
+		Route::post('/add/{article_id}/{parent_id?}', 'CommentsController@addPost')
 			->name('admin.comments.addPost');
 			
 		Route::get('/edit/{article_id}/{comment_id}', 'CommentsController@edit')
@@ -132,10 +132,10 @@ Route::group(['namespace' => 'Client'], function () {
 	
 	Route::group(['prefix' => 'comments', 'middleware' => 'auth'], function () {
 	
-		Route::get('/add/{article_id}', 'CommentsController@add')
+		Route::get('/add/{article_id}/{parent_id?}', 'CommentsController@add')
 			->name('public.comments.add');
 			
-		Route::post('/add/{article_id}', 'CommentsController@addPost')
+		Route::post('/add/{article_id}/{parent_id?}', 'CommentsController@addPost')
 			->name('public.comments.addPost');
 	});
 });

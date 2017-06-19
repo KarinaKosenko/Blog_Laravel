@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers\Client;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Application;
 use App\Models\Article;
 use App\Models\Menu;
-use App\Models\Comment;
 
 
 class ArticlesController extends ClientBase
@@ -30,7 +28,9 @@ class ArticlesController extends ClientBase
 	public function one($id)
 	{
 		$article = Article::findOrFail($id);
-		$comments = $article->comments->sortByDesc('created_at');
+		$comments = $article->comments->sortByDesc('created_at')->toArray();
+		$commentsHelper = App()->make('commentsHelper');
+		$commentsTree = $commentsHelper->getComments($commentsHelper->buildTree($comments), $id);
 
 		return view('layouts.double', [
 			'page' => 'pages.client.articlePage',
@@ -38,7 +38,10 @@ class ArticlesController extends ClientBase
 			'article' => $article,
 			'recent_posts' => $this->recent_posts,
 			'menu' => $this->menu,
-			'comments' => $comments,
+			'comments' => view('pages.client.commentsWrapper', [
+			    'comments' => $commentsTree,
+                'article' => $article,
+            ]),
 		]);
 	}
 }
