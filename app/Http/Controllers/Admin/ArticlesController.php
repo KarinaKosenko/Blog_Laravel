@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Article;
 use App\Models\Menu;
-use App\Models\Comment;
 use App\Http\Requests\AddBlogArticle;
 use Illuminate\Validation\Rule;
 
@@ -33,14 +33,19 @@ class ArticlesController extends AdminBase
 	public function one($id)
 	{
 		$article = Article::findOrFail($id);
-        $comments = $article->comments->sortByDesc('created_at');
+        $comments = $article->comments->sortByDesc('created_at')->toArray();
+        $commentsHelper = App()->make('commentsHelper');
+        $commentsTree = $commentsHelper->getComments($commentsHelper->buildTree($comments), $id, 'admin');
 		
 		return view('layouts.single', [
 			'page' => 'pages.admin.articlePage',
 			'title' => 'Article ' . $article->title, 
 			'menu' => $this->menu,
 			'article' => $article,
-			'comments' => $comments,
+			'comments' => view('pages.admin.commentsWrapper', [
+                'comments' => $commentsTree,
+                'article' => $article,
+            ]),
 		]);
 	}
 	

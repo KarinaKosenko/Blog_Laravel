@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model 
+class Upload extends Model
 {
-	protected $fillable = ['author', 'text', 'article_id', 'parent_id'];
-
+    protected $guarded = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
     public function article()
     {

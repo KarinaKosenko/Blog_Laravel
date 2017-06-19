@@ -26,14 +26,6 @@
 		<a href="{{ route('admin.articles.delete', ['article_id' => $article->id]) }}">Удалить</a>
 	</div>
 
-	<a href="{{ route('admin.comments.add', ['article_id' => $article->id]) }}"><strong>Добавить комментарий</strong></a><br><br>
-
-	@forelse ($comments as $comment)
-		<li><strong>{{ $comment->author }}</strong><br>{{ $comment->created_at }}<br>{{ $comment->text }}</li>
-		<a href="{{ route('admin.comments.edit', ['article_id' => $article->id, 'comment_id' => $comment->id]) }}">Редактировать</a><br>
-		<a href="{{ route('admin.comments.delete', ['article_id' => $article->id, 'comment_id' => $comment->id]) }}">Удалить</a><br><br>
-	@empty
-		<strong>К этой статье комментариев пока нет.</strong>
-	@endforelse
+	{!! $comments !!}
 		
 @endsection

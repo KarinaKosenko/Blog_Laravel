@@ -28,4 +28,10 @@ class Article extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
+
+    public function upload()
+    {
+        return $this->hasOne('App\Models\Upload');
+    }
+
 }

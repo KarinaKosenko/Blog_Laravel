@@ -2,10 +2,8 @@
 
 namespace App\Providers;
 
-use App\Custom\MenuGenerator;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Models\Menu;
+use App\Classes\CommentsHelper;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -26,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        
+        $this->app->singleton('commentsHelper', function() {
+            return new CommentsHelper();
+        });
     }
 }

@@ -13,7 +13,7 @@ class CommentsController extends AdminBase
     public function add($article_id)
 	{
 		return view('layouts.single', [
-			'page' => 'pages.client.addComment', 
+			'page' => 'pages.admin.addComment',
 			'title' => 'Add Comment',
 			'menu' => $this->menu, 
 			'msg' => 'Пожалуйста, добавьте комментарий.',
