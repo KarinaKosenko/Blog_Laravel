@@ -19,7 +19,7 @@ class ArticlesTableSeeder extends Seeder
             $newArticle = Article::create([
                 'title' => $faker->realText(30),
                 'content' => $faker->realText(200),
-                'author' => 'Admin'
+                'user_id' => 1,
             ]);
         }
     }

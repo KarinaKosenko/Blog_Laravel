@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Message;
 use App\Models\Menu;
 use App\Http\Requests\StoreGuestbookMessage;
@@ -19,7 +20,7 @@ class GuestbookController extends ClientBase
 
    public function index()
 	{
-		$messages = Message::orderBy('created_at', 'desc')
+	    $messages = Message::orderBy('created_at', 'desc')
             ->paginate(5);
 		
 		return view('layouts.double', [
@@ -51,5 +52,44 @@ class GuestbookController extends ClientBase
 		return redirect()
 			->route('public.guestbook.index');
 	}
+
+
+    public function edit($id)
+    {
+        $this->authorize('update', Message::class);
+        $message = Message::findOrFail($id);
+
+        return view('layouts.single', [
+            'page' => 'pages.admin.addMessage',
+            'title' => 'Edit Message' . $id,
+            'menu' => $this->menu,
+            'message' => $message,
+            'msg' => 'Пожалуйста, отредактируйте сообщение.',
+        ]);
+    }
+
+
+    public function editPost($id, Request $request, StoreGuestbookMessage $rules)
+    {
+        $this->authorize('update', Message::class);
+
+        $message = Message::findOrFail($id);
+        $message->update($request->all());
+
+        return redirect()
+            ->route('public.guestbook.index');
+    }
+
+
+    public function delete($id)
+    {
+        $this->authorize('delete', Message::class);
+
+        $message = Message::findOrFail($id)
+            ->delete();
+
+        return redirect()
+            ->route('public.guestbook.index');
+    }
 	
 }

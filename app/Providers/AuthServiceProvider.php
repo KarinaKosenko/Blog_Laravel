@@ -4,6 +4,10 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use App\Policies\CommentPolicy;
+use App\Policies\MessagePolicy;
+use App\Models\Comment;
+use App\Models\Message;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        Comment::class => CommentPolicy::class,
+        Message::class => MessagePolicy::class,
     ];
 
     /**
@@ -25,6 +30,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        /**
+         * Gates for admin panel.
+         */
+
+        Gate::define('to_edit_article', function ($user, $article) {
+            return $user->id == $article->user_id;
+        });
+
+        Gate::define('to_delete_article', function ($user, $article) {
+            return $user->id == $article->user_id;
+        });
     }
 }

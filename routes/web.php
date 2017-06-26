@@ -120,6 +120,18 @@ Route::group(['namespace' => 'Client'], function () {
 			
 		Route::post('/add', 'GuestbookController@addPost')
 			->name('public.guestbook.addPost');
+
+        Route::group(['middleware' => 'auth'], function () {
+
+            Route::get('/edit/{id}', 'GuestbookController@edit')
+                ->name('public.guestbook.edit');
+
+            Route::post('/edit/{id}', 'GuestbookController@editPost')
+                ->name('public.guestbook.editPost');
+
+            Route::get('/delete/{id}', 'GuestbookController@delete')
+                ->name('public.guestbook.delete');
+        });
 	});
 	
 	
@@ -137,6 +149,15 @@ Route::group(['namespace' => 'Client'], function () {
 			
 		Route::post('/add/{article_id}/{parent_id?}', 'CommentsController@addPost')
 			->name('public.comments.addPost');
+
+        Route::get('/edit/{article_id}/{comment_id}', 'CommentsController@edit')
+            ->name('public.comments.edit');
+
+        Route::post('/edit/{article_id}/{comment_id}', 'CommentsController@editPost')
+            ->name('public.comments.editPost');
+
+        Route::get('/delete/{article_id}/{comment_id}', 'CommentsController@delete')
+            ->name('public.comments.delete');
 	});
 });
 

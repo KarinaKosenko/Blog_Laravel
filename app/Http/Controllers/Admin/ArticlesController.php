@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use App\Models\Article;
 use App\Models\Menu;
+use App\Models\Comment;
 use App\Http\Requests\AddBlogArticle;
 use Illuminate\Validation\Rule;
 
@@ -16,7 +18,7 @@ class ArticlesController extends AdminBase
 	
 	public function index()
 	{
-		$articles = Article::orderBy('created_at', 'desc')
+	    $articles = Article::orderBy('created_at', 'desc')
             ->paginate(5);
 			
 		$this->menu = Menu::setMenuIsActive($this->menu, 'index');
@@ -33,17 +35,17 @@ class ArticlesController extends AdminBase
 	public function one($id)
 	{
 		$article = Article::findOrFail($id);
-        $comments = $article->comments->sortByDesc('created_at')->toArray();
-        $commentsHelper = App()->make('commentsHelper');
-        $commentsTree = $commentsHelper->getComments($commentsHelper->buildTree($comments), $id, 'admin');
-		
-		return view('layouts.single', [
+        $comments = Comment::where('article_id', $id)
+            ->where('parent_id', null)
+            ->get();
+
+        return view('layouts.single', [
 			'page' => 'pages.admin.articlePage',
 			'title' => 'Article ' . $article->title, 
 			'menu' => $this->menu,
 			'article' => $article,
 			'comments' => view('pages.admin.commentsWrapper', [
-                'comments' => $commentsTree,
+                'comments' => $comments,
                 'article' => $article,
             ]),
 		]);
@@ -68,7 +70,7 @@ class ArticlesController extends AdminBase
 		$newArticle = Article::create([
 			'title' => $request['title'],
 			'content' => $request['content'],
-			'author' => Auth::user()->name,
+            'user_id' => Auth::user()->id,
 		]);
 		
 		return redirect()
@@ -78,22 +80,30 @@ class ArticlesController extends AdminBase
 	
 	public function edit($id)
 	{
-		$article = Article::findOrFail($id);
-		
-		return view('layouts.single', [
-			'page' => 'pages.admin.addArticle', 
-			'title' => 'Edit Article ' . $article->title,
-			'menu' => $this->menu,
-			'article' => $article,
-			'msg' => 'Пожалуйста, отредактируйте статью.',
-		]);
+	    $article = Article::findOrFail($id);
+
+        if (Gate::denies('to_edit_article', $article)) {
+            abort(403);
+        }
+
+        return view('layouts.single', [
+            'page' => 'pages.admin.addArticle',
+            'title' => 'Edit Article ' . $article->title,
+            'menu' => $this->menu,
+            'article' => $article,
+            'msg' => 'Пожалуйста, отредактируйте статью.',
+        ]);
 	}
 	
 	
 	public function editPost($id, Request $request)
 	{
 		$article = Article::findOrFail($id);
-		
+
+        if (Gate::denies('to_edit_article', $article)) {
+            abort(403);
+        }
+
 		$this->validate($request, [
 			'title' => [
 				'required',
@@ -111,10 +121,15 @@ class ArticlesController extends AdminBase
 	
 	public function delete($id)
 	{
-		$article = Article::findOrFail($id)
-		    ->delete();
-		
-		return redirect()
-			->route('admin.articles.index');
+		$article = Article::findOrFail($id);
+
+        if (Gate::allows('to_delete_article', $article)) {
+            abort(403);
+        }
+
+        $article->delete();
+
+        return redirect()
+            ->route('admin.articles.index');
 	}
 }

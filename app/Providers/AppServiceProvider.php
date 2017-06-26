@@ -24,8 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('commentsHelper', function() {
-            return new CommentsHelper();
-        });
+        //
     }
 }

@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Article extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['title', 'author', 'content'];
+    protected $dates = ['deleted_at'];
 
 
     /**
@@ -22,16 +26,21 @@ class Article extends Model
             ->get();
     }
 
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
     }
 
-
     public function upload()
     {
         return $this->hasOne('App\Models\Upload');
     }
+
+
 
 }

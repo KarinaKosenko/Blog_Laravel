@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateArticlesTable1 extends Migration
+class CreatePrivilegeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateArticlesTable1 extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('privilege', function (Blueprint $table) {
             $table->increments('id');
-			$table->integer('user_id');
-			$table->string('title');
-			$table->text('content');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->string('description');
         });
     }
 
@@ -30,6 +26,6 @@ class CreateArticlesTable1 extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('privilege');
     }
 }

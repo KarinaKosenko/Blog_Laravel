@@ -80,7 +80,8 @@ class GuestbookController extends AdminBase
 	{
 		$message = Message::findOrFail($id)
 		    ->delete();
-		
+
+
 		return redirect()
 			->route('admin.guestbook.index');
 	}
