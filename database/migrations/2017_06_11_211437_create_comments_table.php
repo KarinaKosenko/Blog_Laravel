@@ -19,8 +19,8 @@ class CreateCommentsTable extends Migration {
       // We add indexes on parent_id, lft, rgt columns by default.
       $table->increments('id');
       $table->integer('parent_id')->nullable();
-	  $table->integer('article_id')->nullable();
-	  $table->string('author', 255);
+	  $table->integer('article_id');
+	  $table->integer('user_id');
 	  $table->text('text');
 
       // Add needed columns here (f.ex: name, slug, path, etc.)

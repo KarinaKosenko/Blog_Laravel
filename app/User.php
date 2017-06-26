@@ -30,6 +30,21 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->admin;
+        return $this->is_admin;
+    }
+
+    public function articles()
+    {
+        return $this->hasMany('App\Models\Article');
+    }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo('App\Models\Role');
     }
 }

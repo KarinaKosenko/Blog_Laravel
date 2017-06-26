@@ -8,11 +8,11 @@
           </div>
 
             <div class="post_author">
-                <span>{{ $article->author }}</span>
+                <span>{{ $article->user->name }}</span>
             </div>
 
             <div class="post_comment">
-                <span>{{ $article->comments->count() }} comments</span>
+                <span>{{ $article->comments->where('text', '<>', 'Комментарий удален.')->count() }} comments</span>
             </div>
 
             <div class="cleaner"></div>

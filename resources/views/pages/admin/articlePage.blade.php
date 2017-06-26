@@ -9,11 +9,11 @@
           </div>
 
             <div class="post_author">
-                <span>{{ $article->author }}</span>
+                <span>{{ $article->user->name }}</span>
             </div>
 
             <div class="post_comment">
-                <span>{{ $article->comments->count() }} comments</span>
+                <span>{{ $article->comments->where('text', '<>', 'Комментарий удален.')->count() }} comments</span>
             </div>
 
             <div class="cleaner"></div>
@@ -21,9 +21,15 @@
 		
 		<div class="post_body">
 			{!! $article->content !!}
-		</div>  
-		<a href="{{ route('admin.articles.edit', ['article_id' => $article->id]) }}">Редактировать</a><br>
-		<a href="{{ route('admin.articles.delete', ['article_id' => $article->id]) }}">Удалить</a>
+		</div>
+
+        @can('to_edit_article', $article)
+            <a href="{{ route('admin.articles.edit', ['article_id' => $article->id]) }}">Редактировать</a><br>
+        @endcan
+
+        @can('to_delete_article', $article)
+		    <a href="{{ route('admin.articles.delete', ['article_id' => $article->id]) }}">Удалить</a>
+        @endcan
 	</div>
 
 	{!! $comments !!}

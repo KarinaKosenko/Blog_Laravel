@@ -24,7 +24,7 @@ class CommentsController extends AdminBase
 	public function addPost($article_id, Request $request, StoreBlogComment $rules)
 	{
 		$newComment = Comment::create([
-			'author' => Auth::user()->name,
+			'user_id' => Auth::user()->id,
 			'text' => $request->text,
 			'article_id' => $article_id,
 		]);

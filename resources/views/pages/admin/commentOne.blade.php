@@ -1,21 +1,36 @@
 <li>
-    <div class="comment">
-        <div class="author">
-            <strong>{{ $comment['author'] }}</strong>
-            <span class="date">{{ $comment['created_at'] }}</span>
-        </div>
-        <div class="comment_text">{{ $comment['text']}}</div><br>
+    <ul>
+        @foreach($childs as $child)
+            <li>
+                <div class="comment">
+                    <strong>{{ $child->user->name }}</strong><br>
+                    {{ $child->created_at }}<br>
+                    {{ $child->text }}<br>
 
-        @if($comment['text'] !== 'Комментарий удален.')
-            <a href = "{{ route('admin.comments.add', ['article_id' => $article_id, 'parent_id' => $comment['id']]) }}">Ответить</a><br>
-            <a href = "{{ route('admin.comments.edit', ['article_id' => $article_id, 'id' => $comment['id']]) }}">Редактировать</a><br>
-            <a href = "{{ route('admin.comments.delete', ['article_id' => $article_id, 'id' => $comment['id']]) }}">Удалить</a><br><hr>
-        @endif
-    </div>
+                    @if($child->text !== 'Комментарий удален.')
+                        <a href = "{{ route('admin.comments.add', [
+                            'article_id' => $article->id,
+                            'parent_id' => $child->id
+                        ]) }}">Ответить</a><br>
 
-    @if(isset($comment['children']))
-        <ul>
-            {!!  App()->make('commentsHelper')->getComments($comment['children'], $article_id, 'admin') !!}
-        </ul>
-    @endif
+                        <a href = "{{ route('admin.comments.edit', [
+                            'article_id' => $article->id,
+                            'comment_id' => $child->id
+                        ]) }}">Редактировать</a><br>
+
+                        <a href = "{{ route('admin.comments.delete', [
+                            'article_id' => $article->id,
+                            'comment_id' => $child->id
+                        ]) }}">Удалить</a><br>
+                    @endif
+                </div>
+                <hr>
+                @if(count($child->childs))
+                    @include('pages.admin.commentOne',[
+                        'childs' => $child->childs,
+                        'article' => $article])
+                @endif
+            </li>
+        @endforeach
+    </ul>
 </li>
