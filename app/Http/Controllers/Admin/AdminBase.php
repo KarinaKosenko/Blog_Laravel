@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Menu;
 
 /*
@@ -17,7 +17,10 @@ abstract class AdminBase extends Controller
 	
 	public function __construct()
 	{
-		$this->menu = Menu::where('panel_name', 'admin')
-			->get();	
+        $this->menu = Cache::tags(['menu', 'admin'])
+            ->remember('menu', env('CACHE_TIME', 0), function () {
+            return Menu::where('panel_name', 'admin')
+                ->get();
+        });
 	}
 }

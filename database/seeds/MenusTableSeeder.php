@@ -45,5 +45,12 @@ class MenusTableSeeder extends Seeder
             'href' => '/guestbook',
 			'text' => 'Гостевая',
         ]);
+
+        DB::table('menus')->insert([
+            'item_name' => 'feedback',
+            'panel_name' => 'public',
+            'href' => '/feedback',
+            'text' => 'Контакты',
+        ]);
     }
 }

@@ -133,8 +133,18 @@ Route::group(['namespace' => 'Client'], function () {
                 ->name('public.guestbook.delete');
         });
 	});
-	
-	
+
+
+    Route::group(['prefix' => 'feedback'], function () {
+
+        Route::get('/', 'FeedbackController@feedback')
+            ->name('public.feedback.feedback');
+
+        Route::post('/', 'FeedbackController@feedbackPost')
+            ->name('public.feedback.feedbackPost');
+    });
+
+
 	Route::group(['prefix' => 'archive'], function () {
 	
 		Route::get('/search', 'ArchivesController@search')
