@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Article;
 use App\Models\Menu;
@@ -16,11 +17,20 @@ use Illuminate\Validation\Rule;
 class ArticlesController extends AdminBase
 {
 	
-	public function index()
+	public function index(Request $request)
 	{
-	    $articles = Article::orderBy('created_at', 'desc')
-            ->paginate(5);
-			
+        if(isset($request->page)) {
+            Cache::tags(['articles', 'list'])
+                ->flush();
+        }
+
+        $articles = Cache::tags(['articles', 'list'])
+            ->remember('admin', env('CACHE_TIME', 0), function () {
+            return Article::with('user')
+                ->latest()
+                ->paginate(5);
+        });
+
 		$this->menu = Menu::setMenuIsActive($this->menu, 'index');
 		
 		return view('layouts.single', [
@@ -72,6 +82,9 @@ class ArticlesController extends AdminBase
 			'content' => $request['content'],
             'user_id' => Auth::user()->id,
 		]);
+
+		Cache::tags(['articles', 'list'])
+            ->flush();
 		
 		return redirect()
 			->route('admin.articles.index');
@@ -113,6 +126,9 @@ class ArticlesController extends AdminBase
 		]);
 		
 		$article->update($request->all());
+
+        Cache::tags(['articles', 'list'])
+            ->flush();
 		
 		return redirect()
 			->route('admin.articles.index');
@@ -123,11 +139,14 @@ class ArticlesController extends AdminBase
 	{
 		$article = Article::findOrFail($id);
 
-        if (Gate::allows('to_delete_article', $article)) {
+        if (Gate::denies('to_delete_article', $article)) {
             abort(403);
         }
 
         $article->delete();
+
+        Cache::tags(['articles', 'list'])
+            ->flush();
 
         return redirect()
             ->route('admin.articles.index');

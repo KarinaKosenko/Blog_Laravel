@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Client;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Article;
 use App\Models\Menu;
@@ -11,10 +13,19 @@ use App\Models\Comment;
 
 class ArticlesController extends ClientBase
 {
-    public function index()
+    public function index(Request $request)
 	{
-	    $articles = Article::orderBy('created_at', 'desc')
-            ->paginate(5);
+        if(isset($request->page)) {
+            Cache::tags(['articles', 'list'])
+                ->flush();
+        }
+
+	    $articles = Cache::tags(['articles', 'list'])
+            ->remember('public', env('CACHE_TIME', 0), function () {
+            return Article::with('user')
+                ->latest()
+                ->paginate(5);
+        });
 
 		$this->menu = Menu::setMenuIsActive($this->menu, 'index');
 		
