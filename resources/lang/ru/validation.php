@@ -112,6 +112,10 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'captcha' => [
+            'captcha' => 'Неверный ввод символов.',
+        ],
 		
 		'is_confirmed' => [
 			'accepted' => 'Вы должны принять условия сайта.',
@@ -144,6 +148,7 @@ return [
 		'title' => '"Заголовок"',
 		'content' => '"Содержание"',
 		'text' => '"Сообщение"',
+        'captcha' => '"Captcha"',
     ],
 
 ];

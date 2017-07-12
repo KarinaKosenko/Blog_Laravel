@@ -4,7 +4,7 @@
 	@foreach ($recent_posts as $post)
 		<div class="recent_post">
 			<h4><a href="{{ route('public.articles.one', ['id' => $post->id]) }}">{{ $post->title }}</a></h4>
-			<p>{{ substrContent($post->content) }}</p>
+			<p>{{ substrContent($post->content, 100) }}</p>
 		</div>
 	@endforeach          
 </div>

@@ -81,6 +81,7 @@ class ArticlesController extends AdminBase
 			'title' => $request['title'],
 			'content' => $request['content'],
             'user_id' => Auth::user()->id,
+            'image_link' => $request['image_link'],
 		]);
 
 		Cache::tags(['articles', 'list'])

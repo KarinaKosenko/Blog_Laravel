@@ -49,6 +49,7 @@ class AuthController extends Controller
 			'email' => 'required|email|unique:users|max:200',
 			'password' => 'required|max:200|min:6',
 			'password2' => 'required|same:password',
+            'captcha' => 'required|captcha',
 			'is_confirmed' => 'accepted'
 		]);
 		

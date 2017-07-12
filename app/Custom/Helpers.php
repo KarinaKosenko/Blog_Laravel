@@ -18,9 +18,9 @@
 	}
 	
 	
-	function substrContent($content)
+	function substrContent($content, $length)
 	{
-		return substr($content, 0, 100) . '...';
+		return substr($content, 0, $length) . '...';
 	}
 	
 	

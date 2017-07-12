@@ -18,6 +18,7 @@ class CreateArticlesTable1 extends Migration
 			$table->integer('user_id');
 			$table->string('title');
 			$table->text('content');
+            $table->text('image_link')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
