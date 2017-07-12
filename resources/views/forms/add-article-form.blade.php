@@ -8,6 +8,9 @@
 			<strong> {{ $errors->first('title') }} </strong>
 		</div>
 	@endif
+
+	Ссылка на изображение:<br>
+	<input type="text" name="image_link"{{ $article->image_link or old('image_link') }}><br>
 	
 	Содержание:<br>
 	<textarea name="content">{{ $article->content or old('content') }}</textarea><br>

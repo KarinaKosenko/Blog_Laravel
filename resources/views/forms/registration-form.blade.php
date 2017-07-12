@@ -36,7 +36,17 @@
 		</div>
 	@endif
 	<br>
-	
+
+	Введите код с изображения: *<br>
+	{!!  captcha_img() !!}<br>
+	<input type="text" name="captcha"><br>
+	@if ($errors->has('captcha'))
+		<div class="warning_message">
+			<strong> {{ $errors->first('captcha') }} </strong>
+		</div>
+	@endif
+	<br>
+
 	<input type="checkbox" name="is_confirmed">Принять правила сайта<br>
 	@if ($errors->has('is_confirmed'))
 		<div class="warning_message">

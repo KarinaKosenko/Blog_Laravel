@@ -313,6 +313,11 @@ h4 {
 	padding: 0 15px;
 }
 
+#main_column li img .image {
+	width: 400px;
+	height: 300px;
+}
+
 #main_column .post_box {
 	clear: both;
 	margin-bottom: 50px;
@@ -515,6 +520,8 @@ h4 {
 	color: #ffffff;
 	text-decoration: none;
 }
+
+
 
 
 

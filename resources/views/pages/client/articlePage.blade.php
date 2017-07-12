@@ -19,6 +19,7 @@
         </div>
 		
 		<div class="post_body">
+            <img class="image" width="450px" height="300px" src="{{ $article->image_link }}" alt="image"><br>
 			{!! $article->content !!}
 		</div>     
 	</div>
