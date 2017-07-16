@@ -28,5 +28,22 @@
 	{
 		return substr($date, 0, 10);
 	}
-	
+
+
+    function getImagePath($path)
+    {
+        $nameArray = explode('.', $path);
+        $ext = array_pop($nameArray);
+        $file = str_replace('.', '/', implode('.', $nameArray));
+        $filePath = config('blog.uploadPath') . config('blog.imageUploadSection') . '/' . $file;
+        $resPath = config('blog.uploadDir') . config('blog.imageUploadSection') . '/' . $file;
+
+        if (!File::isFile($filePath . '.' . $ext)) {
+            $resPath = config('blog.imageDefault');
+            $ext = 'jpg';
+        }
+
+        return $resPath . '.' . $ext;
+    }
+
 	

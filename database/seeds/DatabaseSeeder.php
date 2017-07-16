@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PrivilegeTableSeeder::class);
         $this->call(PrivilegeRoleTableSeeder::class);
         $this->call(CommentsTableSeeder::class);
+        $this->call(UploadsTableSeeder::class);
     }
 }

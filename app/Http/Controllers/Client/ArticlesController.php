@@ -31,7 +31,8 @@ class ArticlesController extends ClientBase
 		
 		return view('layouts.double', [
 			'articles' => $articles,
-			'page' => 'pages.client.articlesList',
+            'title' => 'Articles List',
+            'page' => 'pages.client.articlesList',
 			'recent_posts' => $this->recent_posts,
 			'menu' => $this->menu,
 		]);

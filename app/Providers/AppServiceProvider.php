@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Classes\CommentsHelper;
+use App\Classes\ImageHelper;
 
 class AppServiceProvider extends ServiceProvider
 {

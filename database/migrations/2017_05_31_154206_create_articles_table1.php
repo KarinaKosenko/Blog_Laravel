@@ -16,9 +16,9 @@ class CreateArticlesTable1 extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
 			$table->integer('user_id');
+            $table->integer('upload_id')->nullable();
 			$table->string('title');
 			$table->text('content');
-            $table->text('image_link')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

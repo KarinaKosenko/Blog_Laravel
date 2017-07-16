@@ -2,10 +2,12 @@
 	
 	@forelse ($articles as $article)
 		<li>
-			<a href="{{ route('admin.articles.one', ['id' => $article->id]) }}">{{ $article->title }}</a><br>
+			<h3><a href="{{ route('admin.articles.one', ['id' => $article->id]) }}">{{ $article->title }}</a></h3>
 			<strong>Добавлена:</strong> {{ substrDate($article->created_at) }}<br>
 			<strong>Автор:</strong> {{ $article->user->name }}<br>
-			<img class="image" width="450px" height="300px" src="{{ $article->image_link }}" alt="image"><br>
+			@isset($article->upload)
+            	<img class="image" src="{{ getImagePath($article->upload->path . '.' . $article->upload->ext) }}" alt="image"><br>
+			@endisset
 		</li>
 		<br>
 	@empty

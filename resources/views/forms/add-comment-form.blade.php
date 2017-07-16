@@ -12,4 +12,3 @@
 	<input type="submit" value="Отправить">
 </form>
 <br>
-<span>{{ $msg }}</span>

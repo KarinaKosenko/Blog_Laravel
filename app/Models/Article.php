@@ -9,7 +9,7 @@ class Article extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = ['title', 'author', 'content', 'user_id', 'image_link'];
+    protected $fillable = ['title', 'author', 'content', 'user_id', 'upload_id'];
     protected $dates = ['deleted_at'];
 
 
@@ -38,7 +38,7 @@ class Article extends Model
 
     public function upload()
     {
-        return $this->hasOne('App\Models\Upload');
+        return $this->belongsTo('App\Models\Upload');
     }
 
 

@@ -19,7 +19,9 @@
         </div>
 		
 		<div class="post_body">
-            <img class="image" width="450px" height="300px" src="{{ $article->image_link }}" alt="image"><br>
+            @isset($article->upload)
+                <img class="image" src="{{ getImagePath($article->upload->path . '.' . $article->upload->ext) }}" alt="image"><br>
+            @endisset
 			{!! $article->content !!}
 		</div>     
 	</div>
