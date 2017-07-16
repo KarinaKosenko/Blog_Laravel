@@ -20,7 +20,6 @@ class CreateUploadsTable extends Migration
             $table->string('oldname', 255);
             $table->string('ext', 10)->nullable();
             $table->string('mime', 50);
-            $table->tinyInteger('article_id')->nullable();
             $table->timestamps();
         });
     }

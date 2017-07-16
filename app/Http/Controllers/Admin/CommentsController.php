@@ -70,6 +70,8 @@ class CommentsController extends AdminBase
 		]);
 		
 		return redirect()
-			->route('admin.articles.one', ['article_id' => $article_id]);
+			->route('admin.articles.one', [
+			    'article_id' => $article_id
+            ]);
 	}
 }

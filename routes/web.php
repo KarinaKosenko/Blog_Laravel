@@ -196,4 +196,6 @@ Route::post('/admin/login', 'AuthController@loginAdminPost')
 		
 Route::get('/logout', 'AuthController@logout')
     ->name('public.auth.logout');
+
+
 	

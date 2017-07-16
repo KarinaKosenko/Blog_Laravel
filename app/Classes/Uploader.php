@@ -5,6 +5,7 @@ namespace App\Classes;
 use App\Models\Upload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Image;
 
 class Uploader
 {
@@ -64,7 +65,7 @@ class Uploader
 
     public function upload($section = null)
     {
-        $basePath = !is_null($section) ?  config('blog.uploadPath', storage_path()) . '/'. $section : config('blog.uploadPath', storage_path()) . '/' . config('blog.defaultUploadSection', 'files');
+        $basePath = !is_null($section) ?  config('blog.uploadPath', public_path()) . '/'. $section : config('blog.uploadPath', public_path()) . '/' . config('blog.defaultUploadSection', 'files');
         $newName = sha1($this->props['oldname'] . microtime(true));
         $newDir = substr($newName, 0, 1) . '/' . substr($newName, 0, 3);
         $this->uploadPath = str_replace('/', '.', $newDir . '/' . $newName);
@@ -77,15 +78,17 @@ class Uploader
         }
 
         if (File::isDirectory($newPath) && File::isWritable($newPath)) {
-            $this->file->move($newPath, $newName);
+            $img = Image::make($this->file);
+            $img->fit(420, 300);
+            $img->save($newPath . '/' . $newName . '.' . $this->props['ext']);
         } else {
             throw new \ErrorException('Директория ' . $newPath . ' недоступна для записи');
         }
 
-        return File::exists($newPath . '/' . $newName) ? $this->uploadPath : false;
+        return File::exists($newPath . '/' . $newName . '.' . $this->props['ext']) ? $this->uploadPath : false;
     }
 
-    public function register(Upload $uploadModel, $article_id = null)
+    public function register(Upload $uploadModel)
     {
         return $uploadModel->create([
             'path' => $this->uploadPath,
@@ -93,7 +96,6 @@ class Uploader
             'size' => $this->props['size'],
             'ext' => $this->props['ext'],
             'mime' => $this->props['mime'],
-            'article_id' => $article_id,
         ]);
     }
 

@@ -2,7 +2,7 @@
 	{{ csrf_field() }}
 	
 	@if (session('authError'))
-		<strong>{{ session('authError') }}<strong><br>
+		<strong>{{ session('authError') }}</strong><br>
 	@endif
 	
 	E-mail:<br>

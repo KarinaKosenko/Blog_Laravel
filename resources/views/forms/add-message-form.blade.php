@@ -20,4 +20,3 @@
 	<input type="submit" value="Сохранить">
 </form>
 <br>
-<span>{{ $msg }}</span>

@@ -1,2 +1,2 @@
-<strong>{{ $message }}</strong><br><br>
+<h3>{{ $message }}</h3>
 @include('forms.feedback-form')

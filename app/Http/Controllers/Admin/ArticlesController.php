@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -10,8 +9,9 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Article;
 use App\Models\Menu;
 use App\Models\Comment;
-use App\Http\Requests\AddBlogArticle;
 use Illuminate\Validation\Rule;
+use App\Classes\Uploader;
+use App\Models\Upload;
 
 
 class ArticlesController extends AdminBase
@@ -19,7 +19,7 @@ class ArticlesController extends AdminBase
 	
 	public function index(Request $request)
 	{
-        if(isset($request->page)) {
+	    if(isset($request->page)) {
             Cache::tags(['articles', 'list'])
                 ->flush();
         }
@@ -37,7 +37,7 @@ class ArticlesController extends AdminBase
 			'articles' => $articles,
 			'page' => 'pages.admin.articlesList',
 			'title' => 'Articles List', 
-			'menu' => $this->menu, 
+			'menu' => $this->menu,
 		]);
 	}
 	
@@ -62,42 +62,81 @@ class ArticlesController extends AdminBase
 	}
 	
 	
-	public function add()
+	public function add(Request $request)
 	{
 		$this->menu = Menu::setMenuIsActive($this->menu, 'add_article');
+
+		if($request->session()->has('fileError')) {
+            $fileError = $request->session()->pull('fileError', 'default');
+        }
+        else {
+		    $fileError = null;
+        }
 		
 		return view('layouts.single', [
 			'page' => 'pages.admin.addArticle', 
 			'title' => 'Add Article',
 			'menu' => $this->menu, 
 			'msg' => 'Пожалуйста, добавьте статью.',
+            'fileError' => $fileError,
 		]);
 	}
 	
 	
-	public function addPost(Request $request, AddBlogArticle $rules)
+	public function addPost(Request $request, Uploader $uploader, Upload $uploadModel)
 	{
-		$newArticle = Article::create([
-			'title' => $request['title'],
-			'content' => $request['content'],
-            'user_id' => Auth::user()->id,
-            'image_link' => $request['image_link'],
-		]);
+        $this->validate($request, [
+            'title' => 'required|unique:articles|max:200|min:6',
+            'content' => 'required|max:500|min:10',
+        ]);
 
-		Cache::tags(['articles', 'list'])
+        if ($request->file) {
+            if ($uploader->validate($request, 'file', config ('imagerules') )) {
+                $uploadedPath = $uploader->upload(config('blog.imageUploadSection'));
+
+                if ($uploadedPath !== false) {
+                    $uploadsModel = $uploader->register($uploadModel);
+                    $uploadedProps = $uploader->getProps();
+                }
+            }
+            else {
+                $message = implode($uploader->getErrors(), '. ');
+                $request->session()->flash('fileError', $message);
+
+                return redirect()
+                    ->route('admin.articles.add')
+                    ->withInput();
+            }
+        }
+
+        $newArticle = Article::create([
+            'title' => $request['title'],
+            'content' => $request['content'],
+            'user_id' => Auth::user()->id,
+            'upload_id' => isset($uploadsModel) ? $uploadsModel->id : null,
+        ]);
+
+        Cache::tags(['articles', 'list'])
             ->flush();
-		
-		return redirect()
-			->route('admin.articles.index');
+
+        return redirect()
+            ->route('admin.articles.index');
 	}
 	
 	
-	public function edit($id)
+	public function edit($id, Request $request)
 	{
 	    $article = Article::findOrFail($id);
 
         if (Gate::denies('to_edit_article', $article)) {
             abort(403);
+        }
+
+        if($request->session()->has('fileError')) {
+            $fileError = $request->session()->pull('fileError', 'default');
+        }
+        else {
+            $fileError = null;
         }
 
         return view('layouts.single', [
@@ -106,11 +145,12 @@ class ArticlesController extends AdminBase
             'menu' => $this->menu,
             'article' => $article,
             'msg' => 'Пожалуйста, отредактируйте статью.',
+            'fileError' => $fileError,
         ]);
 	}
 	
 	
-	public function editPost($id, Request $request)
+	public function editPost($id, Request $request, Uploader $uploader, Upload $uploadModel)
 	{
 		$article = Article::findOrFail($id);
 
@@ -123,8 +163,33 @@ class ArticlesController extends AdminBase
 				'required',
 				Rule::unique('articles')->ignore($article->id)
 			],
-			'content' => 'required|max:300|min:10',
+			'content' => 'required|max:500|min:10',
 		]);
+
+        if($request->file) {
+            if ($uploader->validate($request, 'file', config ('imagerules') )) {
+                $uploadedPath = $uploader->upload(config('blog.imageUploadSection'));
+
+                if ($uploadedPath !== false) {
+                    $uploadsModel = $uploader->register($uploadModel);
+                    $uploadedProps = $uploader->getProps();
+
+                    $article->update([
+                        'upload_id' => $uploadsModel->id
+                    ]);
+                }
+            }
+            else {
+                $message = implode($uploader->getErrors(), '. ');
+                $request->session()->flash('fileError', $message);
+
+                return redirect()
+                    ->route('admin.articles.edit', [
+                        'id' => $id
+                    ])
+                    ->withInput();
+            }
+        }
 		
 		$article->update($request->all());
 

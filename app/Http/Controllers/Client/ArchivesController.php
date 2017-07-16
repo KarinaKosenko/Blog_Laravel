@@ -29,6 +29,7 @@ class ArchivesController extends ClientBase
 				'page' => 'pages.client.searchArchiveRequest',
 				'recent_posts' => $this->recent_posts,
 				'menu' => $this->menu,
+                'msg' => 'Пожалуйста, выберите период.',
 			]);
 		}
 	}

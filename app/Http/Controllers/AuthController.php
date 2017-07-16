@@ -38,6 +38,7 @@ class AuthController extends Controller
 			'page' => 'pages.client.registrationPage',
 			'recent_posts' => $this->recent_posts,
 			'menu' => $this->menu,
+            'msg' => 'Пожалуйста, заполните необходимые поля.',
 		]);
 	}
 	
@@ -76,6 +77,7 @@ class AuthController extends Controller
 			'page' => 'pages.client.loginPage',
 			'recent_posts' => $this->recent_posts,
 			'menu' => $this->menu,
+            'msg' => 'Пожалуйста, введите логин и пароль.',
 		]);
 	}
 	
