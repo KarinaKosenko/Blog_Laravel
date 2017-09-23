@@ -1,11 +1,23 @@
 <?php
+    /**
+     * Custom helpers for application.
+     */
 
-	function getCurrentYear()
+    /**
+     * Helper for getting current year.
+     *
+     * @return false|string
+     */
+    function getCurrentYear()
 	{
 		return date('Y');
 	}
-	
-	
+
+    /**
+     * Helper for getting a list of russian months.
+     *
+     * @return array
+     */
 	function getMonthsList()
 	{
 		return 
@@ -16,20 +28,36 @@
 				"Октябрь" => 10, "Ноябрь" => 11, "Декабрь" => 12
 			];
 	}
-	
-	
+
+    /**
+     * Helper for getting a substring from input string.
+     *
+     * @param $content
+     * @param $length
+     * @return string
+     */
 	function substrContent($content, $length)
 	{
 		return substr($content, 0, $length) . '...';
 	}
-	
-	
+
+    /**
+     * Helper for getting a substring from input date.
+     *
+     * @param $date
+     * @return bool|string
+     */
 	function substrDate($date)
 	{
 		return substr($date, 0, 10);
 	}
 
-
+    /**
+     * Helper for getting an absolute file's path in the filesystem.
+     *
+     * @param $path
+     * @return string
+     */
     function getImagePath($path)
     {
         $nameArray = explode('.', $path);

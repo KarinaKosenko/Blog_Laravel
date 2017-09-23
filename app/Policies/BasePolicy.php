@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 /**
  * BasePolicy class defines a collection of privileges for current user.
  */
-
 class BasePolicy
 {
     protected $privilege;

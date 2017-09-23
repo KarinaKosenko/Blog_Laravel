@@ -10,7 +10,9 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Article;
 use App\Models\Menu;
 
-
+/**
+ * Class AuthController - custom class for Registration and Authentication.
+ */
 class AuthController extends Controller
 {
     public $recent_posts;
@@ -29,8 +31,12 @@ class AuthController extends Controller
                 return Article::recent(3);
             });
 	}
-	
-	
+
+    /**
+     * Method for getting register form page.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function register()
 	{
 		return view('layouts.double', [
@@ -41,8 +47,13 @@ class AuthController extends Controller
             'msg' => 'Пожалуйста, заполните необходимые поля.',
 		]);
 	}
-	
-	
+
+    /**
+     * Method for user validation and registration.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function registerPost(Request $request)
 	{
 		$this->validate($request, [
@@ -53,7 +64,6 @@ class AuthController extends Controller
             'captcha' => 'required|captcha',
 			'is_confirmed' => 'accepted'
 		]);
-		
 		
 		DB::table('users')->insert([
             'name' => $request->input('name'),
@@ -68,8 +78,12 @@ class AuthController extends Controller
 		return redirect()
 			->route('public.articles.index');
 	}
-	
-	
+
+    /**
+     * Method for getting login form page.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function login()
 	{
 	    return view('layouts.double', [
@@ -80,8 +94,13 @@ class AuthController extends Controller
             'msg' => 'Пожалуйста, введите логин и пароль.',
 		]);
 	}
-	
-	
+
+    /**
+     * Method for user authentication.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function loginPost(Request $request)
 	{
 		$remember = $request->input('remember') ? true : false;
@@ -100,8 +119,13 @@ class AuthController extends Controller
 				->with('authError', trans('custom.wrong_password'));
 		}
 	}
-	
-	
+
+    /**
+     * Method for user-admin authentication.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function loginAdminPost(Request $request)
 	{
 		$remember = $request->input('remember') ? true : false;
@@ -120,8 +144,12 @@ class AuthController extends Controller
 				->with('authError', trans('custom.wrong_password'));
 		}
 	}
-	
-	
+
+    /**
+     * Method for log out.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function logout()
 	{
 		Auth::logout();

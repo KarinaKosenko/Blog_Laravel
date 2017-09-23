@@ -5,11 +5,20 @@ namespace App\Http\Controllers\Client;
 use Illuminate\Http\Request;
 use App\Models\Article;
 
+/**
+ * Class ArchivesController - class for archive of the articles on the client side.
+ */
 class ArchivesController extends ClientBase
 {
-	public function search(Request $request)
+    /**
+     * Method for archive searching (by month and by year).
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function search(Request $request)
 	{
-		if(isset($request->year) && isset($request->month)) {
+		if (isset($request->year) && isset($request->month)) {
 			$articles = Article::whereBetween('created_at', [
 			    "$request->year". "-" . "$request->month" . "-" . "01",
                 "$request->year". "-" . "$request->month" . "-" . "31"

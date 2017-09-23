@@ -8,10 +8,9 @@ use Illuminate\Support\Facades\Cache;
 use App\Models\Article;
 use App\Models\Menu;
 
-/*
- * Базовый контроллер для всех остальных контроллеров клиентской части.
+/**
+ * ClientBase - base controller for the client side.
  */
-
 class ClientBase extends Controller
 {
 	protected $menu;

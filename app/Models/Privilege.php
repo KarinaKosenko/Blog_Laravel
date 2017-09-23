@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Privilege - a Model to work with privilege.
+ */
 class Privilege extends Model
 {
     protected $table = 'privilege';

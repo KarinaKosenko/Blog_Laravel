@@ -7,10 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Menu;
 
-/*
- * Базовый контроллер для всех остальных контроллеров админки.
+/**
+ * AdminBase - base controller for admin panel.
  */
-
 abstract class AdminBase extends Controller
 {
     protected $menu;

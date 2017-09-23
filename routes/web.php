@@ -15,15 +15,16 @@ use Illuminate\Support\Facades\Route;
 
 
 /**
- * Routes for admin panel
+ * Routes for admin panel.
  */
-
 Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admin'], function () {
 	
 	Route::get('/', 'ArticlesController@index')
 		->name('admin.articles.index');
-	
-	
+
+    /**
+     * Routes for articles.
+     */
 	Route::group(['prefix' => '/articles'], function () {
 		
 		Route::get('/', 'ArticlesController@index')
@@ -47,8 +48,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admi
 		Route::get('/delete/{id}', 'ArticlesController@delete')
 			->name('admin.articles.delete');
 	});
-	
-	
+
+    /**
+     * Routes for guest book messages.
+     */
 	Route::group(['prefix' => 'guestbook'], function () {
 		
 		Route::get('/', 'GuestbookController@index')
@@ -69,8 +72,10 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admi
 		Route::get('/delete/{id}', 'GuestbookController@delete')
 			->name('admin.guestbook.delete');
 	});
-	
-	
+
+    /**
+     * Routes for comments.
+     */
 	Route::group(['prefix' => 'comments'], function () {
 	
 		Route::get('/add/{article_id}/{parent_id?}', 'CommentsController@add')
@@ -92,14 +97,16 @@ Route::group(['namespace' => 'Admin', 'middleware' => 'admin', 'prefix' => 'admi
 
 
 /**
- * Routes for client panel
+ * Routes for the client side.
  */
-
 Route::group(['namespace' => 'Client'], function () {
 	
 	Route::get('/', 'ArticlesController@index')
 		->name('public.articles.index');
-	
+
+    /**
+     * Routes for articles.
+     */
 	Route::group(['prefix' => 'articles'], function () {
 		
 		Route::get('/', 'ArticlesController@index')
@@ -108,8 +115,10 @@ Route::group(['namespace' => 'Client'], function () {
 		Route::get('/one/{id}', 'ArticlesController@one')
 			->name('public.articles.one');
 	});
-	
-	
+
+    /**
+     * Routes for guest book messages.
+     */
 	Route::group(['prefix' => 'guestbook'], function () {
 		
 		Route::get('/', 'GuestbookController@index')
@@ -134,7 +143,9 @@ Route::group(['namespace' => 'Client'], function () {
         });
 	});
 
-
+    /**
+     * Routes for feedback.
+     */
     Route::group(['prefix' => 'feedback'], function () {
 
         Route::get('/', 'FeedbackController@feedback')
@@ -144,14 +155,18 @@ Route::group(['namespace' => 'Client'], function () {
             ->name('public.feedback.feedbackPost');
     });
 
-
+    /**
+     * Routes for articles archive.
+     */
 	Route::group(['prefix' => 'archive'], function () {
 	
 		Route::get('/search', 'ArchivesController@search')
 			->name('public.archives.search');
 	});
-	
-	
+
+    /**
+     * Routes for comments.
+     */
 	Route::group(['prefix' => 'comments', 'middleware' => 'auth'], function () {
 	
 		Route::get('/add/{article_id}/{parent_id?}', 'CommentsController@add')
@@ -173,15 +188,21 @@ Route::group(['namespace' => 'Client'], function () {
 
 
 /**
- * Routes for register and login
+ * Routes for authentication.
  */
 
- Route::get('/register', 'AuthController@register')
+/**
+ * Routes for registration.
+ */
+Route::get('/register', 'AuthController@register')
     ->name('public.auth.register');
 	
 Route::post('/register', 'AuthController@registerPost')
     ->name('public.auth.registerPost');
-	
+
+/**
+ * Routes for log in.
+ */
 Route::get('/login', 'AuthController@login')
     ->name('login');
 	
@@ -193,7 +214,10 @@ Route::get('/admin/login','AuthController@login')
 	
 Route::post('/admin/login', 'AuthController@loginAdminPost')
     ->name('admin.auth.loginPost');
-		
+
+/**
+ * Route for log out.
+ */
 Route::get('/logout', 'AuthController@logout')
     ->name('public.auth.logout');
 

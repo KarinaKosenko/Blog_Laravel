@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Comment - a Model to work with comments.
+ */
 class Comment extends Model 
 {
 	protected $fillable = ['user_id', 'username', 'text', 'article_id', 'parent_id'];
-
 
     public function article()
     {
@@ -16,7 +18,7 @@ class Comment extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function childs()

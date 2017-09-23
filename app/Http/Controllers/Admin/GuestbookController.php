@@ -7,7 +7,9 @@ use App\Models\Message;
 use App\Models\Menu;
 use App\Http\Requests\StoreGuestbookMessage;
 
-
+/**
+ * Class GuestbookController - controller for guest book messages for admin panel.
+ */
 class GuestbookController extends AdminBase
 {
     public function __construct()
@@ -15,8 +17,12 @@ class GuestbookController extends AdminBase
 		parent::__construct();
 		$this->menu = Menu::setMenuIsActive($this->menu, 'guestbook');
 	}
-	
-	
+
+    /**
+     * Method for getting a list of messages.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function index()
 	{
 		$messages = Message::orderBy('created_at', 'desc')
@@ -29,8 +35,12 @@ class GuestbookController extends AdminBase
 			'messages' => $messages,
 		]);
 	}
-	
-	
+
+    /**
+     * Method for getting message adding page.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function add()
 	{
 		return view('layouts.single', [
@@ -40,8 +50,14 @@ class GuestbookController extends AdminBase
 			'msg' => 'Пожалуйста, добавьте сообщение.',
 		]);
 	}
-	
-	
+
+    /**
+     * Method for message validation and adding to database.
+     *
+     * @param Request $request
+     * @param StoreGuestbookMessage $rules
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function addPost(Request $request, StoreGuestbookMessage $rules)
 	{
 		$newMessage = Message::create($request->all());
@@ -49,8 +65,13 @@ class GuestbookController extends AdminBase
 		return redirect()
 			->route('admin.guestbook.index');
 	}
-	
-	
+
+    /**
+     * Method for getting message editing page.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function edit($id)
 	{
 		$message = Message::findOrFail($id);
@@ -63,8 +84,15 @@ class GuestbookController extends AdminBase
 			'msg' => 'Пожалуйста, отредактируйте сообщение.',
 		]);
 	}
-	
-	
+
+    /**
+     * Method for message validation and editing.
+     *
+     * @param $id
+     * @param Request $request
+     * @param StoreGuestbookMessage $rules
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function editPost($id, Request $request, StoreGuestbookMessage $rules)
 	{
 		$message = Message::findOrFail($id);
@@ -74,8 +102,13 @@ class GuestbookController extends AdminBase
 		return redirect()
 			->route('admin.guestbook.index');
 	}
-	
-	
+
+    /**
+     * Method for message deleting.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function delete($id)
 	{
 		$message = Message::findOrFail($id)

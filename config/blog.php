@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Determine files uploading properties.
+ */
 return [
     'uploadPath' => public_path() . '/uploads/',
     'uploadDir' => '/uploads/',

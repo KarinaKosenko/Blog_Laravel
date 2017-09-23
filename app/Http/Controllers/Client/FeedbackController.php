@@ -7,8 +7,16 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\FeedbackMail;
 use App\Models\Menu;
 
+/**
+ * Class FeedbackController - controller for feedback on the client side.
+ */
 class FeedbackController extends ClientBase
 {
+    /**
+     * Method for getting feedback form page.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function feedback()
     {
         $this->menu = Menu::setMenuIsActive($this->menu, 'feedback');
@@ -22,6 +30,12 @@ class FeedbackController extends ClientBase
         ]);
     }
 
+    /**
+     * Method for feedback message validation and sending to my mail.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function feedbackPost(Request $request)
     {
         $this->validate($request, [
