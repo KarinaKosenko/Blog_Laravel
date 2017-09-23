@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Role - a Model to work with roles.
+ */
 class Role extends Model
 {
     protected $table = 'roles';
@@ -11,7 +14,7 @@ class Role extends Model
 
     public function users()
     {
-        return $this->hasMany('App\User');
+        return $this->hasMany('App\Models\User');
     }
 
     public function privilegies()

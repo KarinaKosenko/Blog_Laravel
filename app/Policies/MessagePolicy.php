@@ -2,9 +2,12 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Class MessagePolicy - determine whether the user can work with guest book messages.
+ */
 class MessagePolicy extends BasePolicy
 {
     use HandlesAuthorization;
@@ -15,8 +18,8 @@ class MessagePolicy extends BasePolicy
     /**
      * Determine whether the user can update the message.
      *
-     * @param  \App\User  $user
-     * @param  \App\Message  $message
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Message  $message
      * @return mixed
      */
     public function update(User $user)
@@ -27,8 +30,8 @@ class MessagePolicy extends BasePolicy
     /**
      * Determine whether the user can delete the message.
      *
-     * @param  \App\User  $user
-     * @param  \App\Message  $message
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Message  $message
      * @return mixed
      */
     public function delete(User $user)

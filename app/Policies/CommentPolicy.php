@@ -2,10 +2,13 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Models\User;
 use App\Models\Comment;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+/**
+ * Class CommentPolicy - determine whether the user can work with comments.
+ */
 class CommentPolicy extends BasePolicy
 {
     use HandlesAuthorization;
@@ -16,8 +19,8 @@ class CommentPolicy extends BasePolicy
     /**
      * Determine whether the user can update the comment.
      *
-     * @param  \App\User  $user
-     * @param  \App\Comment  $comment
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Comment  $comment
      * @return mixed
      */
     public function update(User $user, Comment $comment)
@@ -28,8 +31,8 @@ class CommentPolicy extends BasePolicy
     /**
      * Determine whether the user can delete the comment.
      *
-     * @param  \App\User  $user
-     * @param  \App\Comment  $comment
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Comment  $comment
      * @return mixed
      */
     public function delete(User $user, Comment $comment)

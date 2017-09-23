@@ -13,13 +13,20 @@ use Illuminate\Validation\Rule;
 use App\Classes\Uploader;
 use App\Models\Upload;
 
-
+/**
+ * Class ArticlesController - controller for articles for admin panel.
+ */
 class ArticlesController extends AdminBase
 {
-	
+    /**
+     * Method for getting a list of articles.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function index(Request $request)
 	{
-	    if(isset($request->page)) {
+	    if (isset($request->page)) {
             Cache::tags(['articles', 'list'])
                 ->flush();
         }
@@ -40,8 +47,13 @@ class ArticlesController extends AdminBase
 			'menu' => $this->menu,
 		]);
 	}
-	
-	
+
+    /**
+     * Method for getting an article page (by id).
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function one($id)
 	{
 		$article = Article::findOrFail($id);
@@ -60,13 +72,18 @@ class ArticlesController extends AdminBase
             ]),
 		]);
 	}
-	
-	
+
+    /**
+     * Method for getting article adding page.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function add(Request $request)
 	{
 		$this->menu = Menu::setMenuIsActive($this->menu, 'add_article');
 
-		if($request->session()->has('fileError')) {
+		if ($request->session()->has('fileError')) {
             $fileError = $request->session()->pull('fileError', 'default');
         }
         else {
@@ -81,8 +98,15 @@ class ArticlesController extends AdminBase
             'fileError' => $fileError,
 		]);
 	}
-	
-	
+
+    /**
+     * Method for article validation and adding to database.
+     *
+     * @param Request $request
+     * @param Uploader $uploader
+     * @param Upload $uploadModel
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
 	public function addPost(Request $request, Uploader $uploader, Upload $uploadModel)
 	{
         $this->validate($request, [
@@ -122,8 +146,14 @@ class ArticlesController extends AdminBase
         return redirect()
             ->route('admin.articles.index');
 	}
-	
-	
+
+    /**
+     * Method for getting article editing page.
+     *
+     * @param $id
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function edit($id, Request $request)
 	{
 	    $article = Article::findOrFail($id);
@@ -132,7 +162,7 @@ class ArticlesController extends AdminBase
             abort(403);
         }
 
-        if($request->session()->has('fileError')) {
+        if ($request->session()->has('fileError')) {
             $fileError = $request->session()->pull('fileError', 'default');
         }
         else {
@@ -148,8 +178,16 @@ class ArticlesController extends AdminBase
             'fileError' => $fileError,
         ]);
 	}
-	
-	
+
+    /**
+     * Method for article validation and editing.
+     *
+     * @param $id
+     * @param Request $request
+     * @param Uploader $uploader
+     * @param Upload $uploadModel
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
 	public function editPost($id, Request $request, Uploader $uploader, Upload $uploadModel)
 	{
 		$article = Article::findOrFail($id);
@@ -166,7 +204,7 @@ class ArticlesController extends AdminBase
 			'content' => 'required|max:500|min:10',
 		]);
 
-        if($request->file) {
+        if ($request->file) {
             if ($uploader->validate($request, 'file', config ('imagerules') )) {
                 $uploadedPath = $uploader->upload(config('blog.imageUploadSection'));
 
@@ -199,8 +237,13 @@ class ArticlesController extends AdminBase
 		return redirect()
 			->route('admin.articles.index');
 	}
-	
-	
+
+    /**
+     * Method for article deleting.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function delete($id)
 	{
 		$article = Article::findOrFail($id);

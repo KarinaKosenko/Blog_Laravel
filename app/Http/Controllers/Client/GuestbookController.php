@@ -8,7 +8,9 @@ use App\Models\Message;
 use App\Models\Menu;
 use App\Http\Requests\StoreGuestbookMessage;
 
-
+/**
+ * Class GuestbookController - controller for guest book messages on the client side.
+ */
 class GuestbookController extends ClientBase
 {
     public function __construct()
@@ -17,8 +19,12 @@ class GuestbookController extends ClientBase
 		$this->menu = Menu::setMenuIsActive($this->menu, 'guestbook');
 	}
 
-
-   public function index()
+    /**
+     * Method for getting a list of messages.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function index()
 	{
 	    $messages = Message::orderBy('created_at', 'desc')
             ->paginate(5);
@@ -31,8 +37,12 @@ class GuestbookController extends ClientBase
 			'menu' => $this->menu,
 		]);
 	}
-	
-	
+
+    /**
+     * Method for getting message adding page.
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function add()
 	{
 		return view('layouts.double', [
@@ -43,8 +53,14 @@ class GuestbookController extends ClientBase
 			'menu' => $this->menu,
 		]);
 	}
-	
-	
+
+    /**
+     * Method for message validation and adding to database.
+     *
+     * @param Request $request
+     * @param StoreGuestbookMessage $rules
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function addPost(Request $request, StoreGuestbookMessage $rules)
 	{
 		$newMessage = Message::create($request->all());
@@ -53,7 +69,12 @@ class GuestbookController extends ClientBase
 			->route('public.guestbook.index');
 	}
 
-
+    /**
+     * Method for getting message editing page.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($id)
     {
         $this->authorize('update', Message::class);
@@ -68,11 +89,17 @@ class GuestbookController extends ClientBase
         ]);
     }
 
-
+    /**
+     * Method for message validation and editing.
+     *
+     * @param $id
+     * @param Request $request
+     * @param StoreGuestbookMessage $rules
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function editPost($id, Request $request, StoreGuestbookMessage $rules)
     {
         $this->authorize('update', Message::class);
-
         $message = Message::findOrFail($id);
         $message->update($request->all());
 
@@ -80,11 +107,15 @@ class GuestbookController extends ClientBase
             ->route('public.guestbook.index');
     }
 
-
+    /**
+     * Method for message deleting.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete($id)
     {
         $this->authorize('delete', Message::class);
-
         $message = Message::findOrFail($id)
             ->delete();
 

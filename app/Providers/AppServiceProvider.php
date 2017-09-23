@@ -7,21 +7,12 @@ use App\Classes\ImageHelper;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
     public function boot()
     {
         include app_path('Custom' . DIRECTORY_SEPARATOR . 'Helpers.php');
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
+
     public function register()
     {
         //

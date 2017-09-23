@@ -10,9 +10,17 @@ use App\Models\Article;
 use App\Models\Menu;
 use App\Models\Comment;
 
-
+/**
+ * Class ArticlesController - controller for articles on the client side.
+ */
 class ArticlesController extends ClientBase
 {
+    /**
+     * Method for getting a list of articles.
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function index(Request $request)
 	{
         if(isset($request->page)) {
@@ -37,8 +45,13 @@ class ArticlesController extends ClientBase
 			'menu' => $this->menu,
 		]);
 	}
-	
-	
+
+    /**
+     * Method for getting an article page.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
 	public function one($id)
 	{
 	    $article = Article::findOrFail($id);

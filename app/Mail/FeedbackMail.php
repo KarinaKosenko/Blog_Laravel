@@ -7,6 +7,9 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
+/**
+ * Class FeedbackMail - for sending feedback mails.
+ */
 class FeedbackMail extends Mailable
 {
     use Queueable, SerializesModels;

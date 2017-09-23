@@ -7,9 +7,18 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Comment;
 use App\Http\Requests\StoreBlogComment;
 
-
+/**
+ * Class CommentsController - controller for comments on the client side.
+ */
 class CommentsController extends ClientBase
 {
+    /**
+     * Method for getting comment adding page.
+     *
+     * @param $article_id
+     * @param null $parent_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function add($article_id, $parent_id = null)
 	{
 	    return view('layouts.double', [
@@ -20,8 +29,16 @@ class CommentsController extends ClientBase
 			'msg' => 'Пожалуйста, добавьте комментарий.',
 		]);
 	}
-	
-	
+
+    /**
+     * Method for comment validation and adding to database.
+     *
+     * @param $article_id
+     * @param Request $request
+     * @param StoreBlogComment $rules
+     * @param null $parent_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
 	public function addPost($article_id, Request $request, StoreBlogComment $rules, $parent_id = null)
 	{
 		$newComment = Comment::create([
@@ -35,7 +52,13 @@ class CommentsController extends ClientBase
 			->route('public.articles.one', ['article_id' => $article_id]);
 	}
 
-
+    /**
+     * Method for getting comment editing page.
+     *
+     * @param $article_id
+     * @param $comment_id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function edit($article_id, $comment_id)
     {
         $comment = Comment::findOrFail($comment_id);
@@ -50,7 +73,15 @@ class CommentsController extends ClientBase
         ]);
     }
 
-
+    /**
+     * Method for comment validation end editing.
+     *
+     * @param $article_id
+     * @param $comment_id
+     * @param Request $request
+     * @param StoreBlogComment $rules
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function editPost($article_id, $comment_id, Request $request, StoreBlogComment $rules)
     {
         $comment = Comment::findOrFail($comment_id);
@@ -64,7 +95,13 @@ class CommentsController extends ClientBase
             ->route('public.articles.one', ['article_id' => $article_id]);
     }
 
-
+    /**
+     * Method for comment deleting.
+     *
+     * @param $article_id
+     * @param $comment_id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete($article_id, $comment_id)
     {
         $comment = Comment::findOrFail($comment_id);

@@ -5,13 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * Class Article - a Model to work with articles.
+ */
 class Article extends Model
 {
     use SoftDeletes;
 
     protected $fillable = ['title', 'author', 'content', 'user_id', 'upload_id'];
     protected $dates = ['deleted_at'];
-
 
     /**
      * Scope a query to include recent articles for widget.
@@ -28,7 +30,7 @@ class Article extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
     public function comments()
@@ -40,7 +42,5 @@ class Article extends Model
     {
         return $this->belongsTo('App\Models\Upload');
     }
-
-
 
 }

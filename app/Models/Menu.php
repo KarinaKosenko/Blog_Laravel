@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * Class Menu - a Model to work with menu.
+ */
 class Menu extends Model
 {
 	public static function setMenuIsActive($menu, $item_name)
